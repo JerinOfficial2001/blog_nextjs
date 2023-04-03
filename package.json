@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^15.16.3",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
@@ -21,9 +22,12 @@
     "@supabase/supabase-js": "^2.13.1",
     "@tinymce/tinymce-react": "^4.3.0",
     "babel-polyfill": "^6.26.0",
+    "dompurify": "^3.0.1",
     "draft-js": "^0.11.7",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
+    "html-react-parser": "^3.0.15",
+    "jsdom": "^21.1.1",
     "next": "13.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

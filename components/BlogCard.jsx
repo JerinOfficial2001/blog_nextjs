@@ -18,6 +18,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import deleteimg from "../assets/deletemark.jpg";
 import Image from "next/image";
+import { documentToReactComponents} from '@contentful/rich-text-react-renderer'
 
 function BlogCard({ blogData,share, deleteBlogDatas }) {
   const [openBlogMenu, setopenBlogMenu] = useState(false);
@@ -30,6 +31,9 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
     blog_content,
     id,
   } = blogData;
+
+  const textEditorContent = (new JSDOM('')).window;
+  const DOMPurify = createDOMPurify(textEditorContent)
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -188,7 +192,8 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>{blog_content}</Typography>
+          {/* <Typography paragraph>{blog_contentHTMLBodyElement}</Typography> */}
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blog_content) } }/>
         </CardContent>
       </Collapse>
 

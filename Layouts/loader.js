@@ -7,7 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 function Loader({ open }) {
   return (
     <Modal open={open}>
-      <Box>
+      <Box sx={{height:'100vh',width:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}>
         <CircularProgress />
       </Box>
     </Modal>
