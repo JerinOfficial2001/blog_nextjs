@@ -15,7 +15,9 @@ import Loader from "@/Layouts/loader";
 function Homepage({ session }) {
   const [isLoading, setisLoading] = useState(false);
   const [switchBtn, setswitchBtn] = useState(false);
-
+  const share = (blog)=>{
+    navigator.share(blog);
+  }
   //get blogdatas
   const [blogDatas, setBlogDatas] = useState([]);
 
@@ -61,7 +63,7 @@ function Homepage({ session }) {
                 width: { ex: 300, lg: 300, md: 300, sm: 200, xs: 200 },
               }}
             >
-              <List getBlogData={getBlogDatas} />
+              <List/>
             </Box>
           )}
 
@@ -81,6 +83,7 @@ function Homepage({ session }) {
                 return (
                   <>
                     <BlogCard
+                    share={share}
                       blogData={blogData}
                       deleteBlogDatas={deleteBlogDatas}
                     />

@@ -5,7 +5,7 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 
-function List({ getBlogDatas }) {
+function List( ) {
   const router = useRouter();
   const navigateHandler = () => {
     router.push("/createblog");

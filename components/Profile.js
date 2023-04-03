@@ -98,7 +98,7 @@ export default function Profile({ open, close, session }) {
             variant="outlined"
             id="email"
             type="text"
-            value={session.user.email}
+            value={session?.user?.email}
           />
 
           <TextField

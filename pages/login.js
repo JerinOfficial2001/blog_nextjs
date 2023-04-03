@@ -1,23 +1,17 @@
+import React from 'react'
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Homepage from "./homepage";
-import NavBarUser from "@/components-user/NavBarUser";
 
-
-const Home = () => {
-  const session = useSession();
-  const supabase = useSupabaseClient();
+function Login() {
+   
   return (
     <>
-      {!session ? (
-        <>
-        {/* <NavBarUser /> */}
-        <Container
+      <Container
           maxWidth="el"
           sx={{
             backgroundColor: "lavender",
@@ -28,7 +22,7 @@ const Home = () => {
             width: "100%",
           }}
         >
-          <Box
+          {/* <Box
             sx={{
               backgroundColor: "white",
               display: "flex",
@@ -66,16 +60,10 @@ const Home = () => {
                 theme="dark"
               />
             </Box>
-          </Box>
+          </Box> */}
         </Container>
-        </>
-      ) : (
-        <>
-          <Homepage session={session} />
-        </>
-      )}
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Login;

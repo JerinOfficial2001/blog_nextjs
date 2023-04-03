@@ -14,7 +14,7 @@ import NavBar from "@/components/NavBar";
 import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
 
-export default function CreateBlog({ getBlogDatas }) {
+export default function CreateBlog() {
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [validator, setvalidator] = useState(false);
@@ -63,7 +63,7 @@ export default function CreateBlog({ getBlogDatas }) {
     }
     console.log(inputData);
     setisLoading(false);
-    getBlogDatas();
+    
   };
 
   //Editor

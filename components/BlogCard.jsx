@@ -19,7 +19,7 @@ import DialogContent from "@mui/material/DialogContent";
 import deleteimg from "../assets/deletemark.jpg";
 import Image from "next/image";
 
-function BlogCard({ blogData, deleteBlogDatas }) {
+function BlogCard({ blogData,share, deleteBlogDatas }) {
   const [openBlogMenu, setopenBlogMenu] = useState(false);
   const [openDialogBox, setopenDialogBox] = useState(false);
   const {
@@ -112,7 +112,9 @@ function BlogCard({ blogData, deleteBlogDatas }) {
               >
                 <DeleteIcon sx={{ fontSize: "medium" }} />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={()=>{
+                share("http://localhost:3000/homepage")
+              }} >
                 <ShareIcon sx={{ fontSize: "medium" }} />
               </IconButton>
               <IconButton
