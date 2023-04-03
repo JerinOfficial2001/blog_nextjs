@@ -112,9 +112,7 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
               >
                 <DeleteIcon sx={{ fontSize: "medium" }} />
               </IconButton>
-              <IconButton onClick={()=>{
-                share("http://localhost:3000/homepage")
-              }} >
+              <IconButton  >
                 <ShareIcon sx={{ fontSize: "medium" }} />
               </IconButton>
               <IconButton

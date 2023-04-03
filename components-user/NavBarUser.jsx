@@ -10,8 +10,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { useRouter } from "next/router";
 import MenuLayout from "@/Layouts/MenuLayout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -21,13 +19,11 @@ import ListItem from "@mui/material/ListItem";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
-function NavBarUser() {
+function NavBarUser({setuserpage}) {
   const [switchMenuBtn, setswitchMenuBtn] = useState(false)
-  const router =useRouter()
+  
 
-  const navigateHandler =()=>{
-    router.push('/login')
-  }
+ 
 
 
 
@@ -82,7 +78,7 @@ function NavBarUser() {
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={() => {
-                      navigateHandler()
+                      setuserpage(false)
                     }}>
                     <ListItemIcon>
                       <LogoutRoundedIcon />
