@@ -8,19 +8,28 @@ import UserCardLayout from "@/components-user/UserCardLayout";
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import ReactTimeAgo from "react-time-ago";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { getBlog } from "@/slices/counterSlice";
 
 
 TimeAgo.addDefaultLocale(en)
 
 
 function UserPage() {
+
   const router =useRouter()
 const dispatch =useDispatch()
 
-const navigator =()=>{
-    router.push('/usercardpage')
+const blog =useSelector(state=>state.counter.blog);
+    const {user_name}=blog;
+
+
+const navigator =async(data)=>{
+  console.log("DATA",data);
+    router.push('/usercardpage');
+    dispatch(getBlog(data));
+    
     
   }
     const [isLoading, setisLoading] = useState(false);
@@ -41,7 +50,6 @@ const navigator =()=>{
   useEffect(() => {
     getBlogDatas();
   }, []);
-
   return (
     <>
     {isLoading && <Loader/>}
@@ -61,14 +69,15 @@ const navigator =()=>{
         const {
             blog_title,
             blog_description,
-            blog_author,
             blog_category,
             created_at
           } = blogData;
         return (
           <>
             <UserCardLayout
-               navigator={navigator}
+            
+               navigator={()=>{
+               navigator(blogData);}}
              > <Typography color='grey' fontSize='small'>
               <ReactTimeAgo date={created_at}/>
               </Typography>
@@ -76,7 +85,7 @@ const navigator =()=>{
             {blog_title || ''}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {blog_author}
+            {user_name}
           </Typography>
           <Typography variant="body2">{blog_category || ''}</Typography>
           <Typography variant="body2">{blog_description || ''}</Typography>

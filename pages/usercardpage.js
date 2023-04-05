@@ -6,11 +6,23 @@ import  IconButton  from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ReactTimeAgo from "react-time-ago";
 import Comments from "@/components-user/comments";
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 
 function UserCardPage() {
-    
-    
+  const router=useRouter()
+    const blog =useSelector(state=>state.counter.blog);
+    const {blog_title,
+      blog_description,
+      blog_category,
+      blog_content,
+      created_at,user_name}=blog;
+
+
+      const navigator=()=>{
+        router.push('/')
+      }
   return (
     <Container  sx={{display: "flex",
 
@@ -29,7 +41,7 @@ function UserCardPage() {
    
     }}>
        <Box width='100%' sx={{float:'right'}}>
-        <IconButton onClick={()=>{setExpanded(false)}} sx={{float:'right',margin:'20px 30px 0px 0px',position:'absolute',right:60}} >
+        <IconButton onClick={()=>{navigator()}} sx={{float:'right',margin:'20px 30px 0px 0px',position:'absolute',right:60}} >
             <CloseRoundedIcon color="black"/>
         </IconButton>
        </Box>
@@ -50,7 +62,7 @@ function UserCardPage() {
             {blog_title || ''}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            By {blog_author}
+            By {user_name}
           </Typography>
           
           <Typography color="text.secondary" variant="body2">{blog_description || ''}</Typography>

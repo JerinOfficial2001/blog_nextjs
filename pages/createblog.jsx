@@ -15,9 +15,12 @@ import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
 import Layout from "@/Layouts/Layout";
 import { useUser } from "@supabase/auth-helpers-react";
+import { useSelector } from "react-redux";
 
 export default function CreateBlog() {
   const user=useUser();
+  const username = useSelector(state=>state.counter.username)
+  console.log(username);
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [validator, setvalidator] = useState(false);
@@ -37,6 +40,8 @@ export default function CreateBlog() {
 
   //add blog
 const user_id=user?.id;
+const user_name = username;
+console.log(user);
   const submitHandler = async () => {
     setisLoading(true);
     if (
@@ -49,11 +54,13 @@ const user_id=user?.id;
       const { data, error } = await supabaseURLKEY.from("blogdatas").insert({
         blog_title,
         blog_description,
-   
         blog_category,
         blog_content,
-        user_id
+        user_id,
+        user_name
+        
       });
+      console.log(username);
       if (data) {
         setBlogDatas(data);
       } else {

@@ -20,7 +20,7 @@ function List( {adminDatas,supabase,setopenProfile}) {
  
   const navigateHandler = () => {
     router.push("/createblog");
-  
+    
   } 
 const navigate =()=>{
   router.push('/')

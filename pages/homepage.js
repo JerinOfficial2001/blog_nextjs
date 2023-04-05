@@ -15,11 +15,13 @@ import Loader from "@/Layouts/loader";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Profile from "@/components/Profile";
 import EditBlog from "./editBlog";
+import { useDispatch } from "react-redux";
+import { getprofile, getusername } from "@/slices/counterSlice";
 
 
 function Homepage({ session }) {
   
-
+const dispatch =useDispatch()
   const [isLoading, setisLoading] = useState(false);
   const [switchBtn, setswitchBtn] = useState(false);
   const share = (blog)=>{
@@ -48,6 +50,7 @@ useEffect(() => {
 }, [session]);
 
 async function getProfile() {
+
   try {
     setLoading(true);
 
@@ -62,7 +65,9 @@ async function getProfile() {
     }
 
     if (data) {
+      dispatch(getusername(data?.username))
       setadminDatas(data)
+    
       // setUsername(data.username);
       // setDob(data.dob);
       // setAvatarUrl(data.avatar_url);
