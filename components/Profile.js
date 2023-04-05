@@ -12,68 +12,8 @@ import Homepage from "@/pages/homepage";
 import FormControl from "@mui/material/FormControl";
 import ModalLayout from "@/Layouts/ModalLayout";
 
-export default function Profile({ open, close, session }) {
-  const supabase = useSupabaseClient();
-  const user = useUser();
-  const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState(null);
-  const [dob, setDob] = useState(null);
-  const [avatar_url, setAvatarUrl] = useState(null);
-
-  useEffect(() => {
-    getProfile();
-  }, [session]);
-
-  async function getProfile() {
-    try {
-      setLoading(true);
-
-      let { data, error, status } = await supabase
-        .from("profiles")
-        .select(`username, dob, avatar_url`)
-        .eq("id", user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setUsername(data.username);
-        setDob(data.dob);
-        setAvatarUrl(data.avatar_url);
-      }
-    } catch (error) {
-      alert("Error loading user data!");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function updateProfile({ username, dob, avatar_url }) {
-    try {
-      setLoading(true);
-
-      const updates = {
-        id: user.id,
-        username,
-        dob,
-        avatar_url,
-        updated_at: new Date().toISOString(),
-      };
-
-      let { error } = await supabase.from("profiles").upsert(updates);
-      if (error) throw error;
-      alert("Profile updated!");
-    } catch (error) {
-      alert("Error updating the data!");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
+export default function Profile({ open, close, session, user,updateProfile,loading,adminDatas,setadminDatas}) {
+  const {username,dob,avatar_url}=adminDatas
   return (
     <ModalLayout open={open} close={close}>
       <Stack
@@ -106,7 +46,7 @@ export default function Profile({ open, close, session }) {
             id="username"
             type="text"
             value={username || ""}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setadminDatas({...adminDatas,username:e.target.value})}
           />
 
           <TextField
@@ -114,7 +54,7 @@ export default function Profile({ open, close, session }) {
             id="website"
             type="date"
             value={dob || ""}
-            onChange={(e) => setDob(e.target.value)}
+            onChange={(e) => setadminDatas({...adminDatas,dob:e.target.value})}
           />
         </FormControl>
         <div>
@@ -125,24 +65,10 @@ export default function Profile({ open, close, session }) {
               "&:hover": { color: "white", backgroundColor: "green" },
               width: 200,
             }}
-            onClick={() => updateProfile({ username, website, avatar_url })}
+            onClick={() => updateProfile({ username,dob, avatar_url })}
             disabled={loading}
           >
             {loading ? "Loading ..." : "Update"}
-          </Button>
-        </div>
-
-        <div>
-          <Button
-            variant="outlined"
-            sx={{
-              borderColor: "red",
-              "&:hover": { color: "white", backgroundColor: "red" },
-              width: 200,
-            }}
-            onClick={() => supabase.auth.signOut()}
-          >
-            Sign Out
           </Button>
         </div>
       </Stack>

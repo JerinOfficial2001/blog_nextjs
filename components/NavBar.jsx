@@ -18,11 +18,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 function NavBar({ session, setswitchBtn }) {
-  const [openProfile, setopenProfile] = React.useState(false);
+  
   const [switchMenuBtn, setswitchMenuBtn] = useState(false);
 
   return (
-    <AppBar position="static" sx={{ position: "sticky" }}>
+    <AppBar  sx={{ position: "fixed" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <IconButton
@@ -36,7 +36,7 @@ function NavBar({ session, setswitchBtn }) {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/admin"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -49,63 +49,6 @@ function NavBar({ session, setswitchBtn }) {
           >
             BLOG
           </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              sx={{ p: 0 }}
-              onMouseEnter={() => {
-                setswitchMenuBtn(true);
-              }}
-              onClick={() => {
-                setswitchMenuBtn((p) => !p);
-              }}
-            >
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-            </IconButton>
-
-            {switchMenuBtn && (
-              <MenuLayout close={setswitchMenuBtn}>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      setopenProfile((p) => !p);
-                    }}
-                  >
-                    <ListItemIcon>
-                      <PersonIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Profile" sx={{ color: "black" }} />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Setting" sx={{ color: "black" }} />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <LogoutRoundedIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Logout" sx={{ color: "black" }} />
-                  </ListItemButton>
-                </ListItem>
-              </MenuLayout>
-            )}
-
-            {openProfile && (
-              <Profile
-                open={openProfile}
-                close={setopenProfile}
-                session={session}
-              />
-            )}
-          </Box>
         </Toolbar>
       </Container>
     </AppBar>

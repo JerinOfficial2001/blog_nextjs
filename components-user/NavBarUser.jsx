@@ -17,12 +17,16 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItem from "@mui/material/ListItem";
 import PersonIcon from "@mui/icons-material/Person";
-import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import LoginRoundedIcon from "@mui/icons-material/LogoutRounded";
+import { useRouter } from "next/router";
 
-function NavBarUser({setuserpage}) {
+function NavBarUser() {
+  const router =useRouter()
   const [switchMenuBtn, setswitchMenuBtn] = useState(false)
   
-
+const navigator =()=>{
+  router.push('/admin')
+}
  
 
 
@@ -78,10 +82,10 @@ function NavBarUser({setuserpage}) {
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton onClick={() => {
-                      setuserpage(false)
+                      navigator()
                     }}>
                     <ListItemIcon>
-                      <LogoutRoundedIcon />
+                      <LoginRoundedIcon />
                     </ListItemIcon>
                     <ListItemText primary="Login" sx={{ color: "black" }} />
                   </ListItemButton>

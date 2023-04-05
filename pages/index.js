@@ -2,31 +2,33 @@ import Admin from "./admin";
 import Container from "@mui/material/Container";
 import NavBarUser from "@/components-user/NavBarUser";
 import { useState } from "react";
+import UserPage from "./userPage";
+import { useSession } from "@supabase/auth-helpers-react";
+import Homepage from "./homepage";
 
 const Home = () => {
-  const [userpage, setuserpage] = useState(true)
+  const session = useSession();
+  const [userpage, setuserpage] = useState(false)
  return(
   <>
-  
-  { userpage?  (
-    <>
-  <NavBarUser setuserpage={setuserpage}/>
+
+
+ {!session?
+ (<>
+   <NavBarUser />
     <Container
-            maxWidth="el"
+            
             sx={{
               backgroundColor: "lavender",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-             height:'100vh',
-              width: "100%",
             }}
           >
-            
-          </Container>
-          </>)
-          :
- ( <Admin />)}
+            <UserPage/>
+          </Container> </> ):(
+          <>
+            <Homepage session={session} />
+          
+          </>
+        )}
   </>
  )
 };

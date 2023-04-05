@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import NavBar from "@/components/NavBar";
 import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
+import Layout from "@/Layouts/Layout";
 
 export default function CreateBlog() {
   const [isLoading, setisLoading] = useState(false);
@@ -57,7 +58,7 @@ export default function CreateBlog() {
         console.log(error);
       }
       setinputData({});
-      router.push("/");
+      router.push("/admin");
     } else {
       setvalidator(true);
     }
@@ -84,9 +85,10 @@ export default function CreateBlog() {
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
-      <NavBar />
-
-      <Container>
+      
+      <Layout>
+        <Container sx={{display:'flex',gap:5}}>
+      <Box flex={1.5}>
         <Stack
           sx={{ width: "100%", height: "100%" }}
           direction="column"
@@ -94,13 +96,33 @@ export default function CreateBlog() {
           alignItems="center"
           gap="10px"
         >
-          <Typography color="black" variant="h4" fontWeight="bold">
+         
+          <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:'90%'}}>
+          <Typography color="black" variant="h5" fontWeight="bold">
             Create New Blog
           </Typography>
+                <Button
+                  startIcon={<SendIcon />}
+                  variant="outlined"
+                  sx={{
+                    borderColor: "green",
+                    "&:hover": { color: "white", backgroundColor: "green" },
+                    width: 100,
+                    float: "right",
+                  }}
+                  onClick={() => {
+                    submitHandler();
+                    //   log();
+                  }}
+                >
+                  Publish
+                </Button>
+              </Box>
+          
           <Stack width="100%" direction="row" spacing={2} alignItems="center">
             <FormControl
               sx={{
-                width: "50%",
+                width: "100%",
                 display: "flex",
                 gap: 2,
               }}
@@ -144,33 +166,7 @@ export default function CreateBlog() {
                   setinputData({ ...inputData, blog_category: e.target.value });
                 }}
               />
-            </FormControl>
-            <FormControl
-              sx={{
-                width: "50%",
-                display: "flex",
-                gap: 4.5,
-              }}
-            >
-              <Box>
-                <Button
-                  startIcon={<SendIcon />}
-                  variant="outlined"
-                  sx={{
-                    borderColor: "green",
-                    "&:hover": { color: "white", backgroundColor: "green" },
-                    width: 100,
-                    float: "right",
-                  }}
-                  onClick={() => {
-                    submitHandler();
-                    //   log();
-                  }}
-                >
-                  Publish
-                </Button>
-              </Box>
-              <TextField
+               <TextField
                 label={
                   <>
                     Description<span style={{ color: "red" }}>*</span>
@@ -187,9 +183,13 @@ export default function CreateBlog() {
                   });
                 }}
               />
+            </FormControl>
+           
+             
+             
               {/* <Select></Select>
           <TextField rows={4} multiline type="text" /> */}
-            </FormControl>
+          
           </Stack>
           <Stack width="90%" direction="row" justifyContent="space-between">
             {/* <Button
@@ -212,8 +212,8 @@ export default function CreateBlog() {
             </Box>
           </Stack>
         </Stack>
-      </Container>
-      <Container>
+      </Box>
+      <Box flex={3}>
         <Editor
           initialValue="Type your text here."
           apiKey="7bbc8wgf339jea6gxr2m92nwmwlxe6tr1dki4s1d665e7wn6"
@@ -251,7 +251,9 @@ export default function CreateBlog() {
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           }}
         />
+      </Box>
       </Container>
+      </Layout>
     </>
   );
 }

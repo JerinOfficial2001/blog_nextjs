@@ -11,8 +11,13 @@ import supabaseURLKEY from "@/supabaseURLKEY";
 import NoItems from "@/components/NoItems";
 import MenuLayout from "@/Layouts/MenuLayout";
 import Loader from "@/Layouts/loader";
+//profile
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import Profile from "@/components/Profile";
+
 
 function Homepage({ session }) {
+  
   const [isLoading, setisLoading] = useState(false);
   const [switchBtn, setswitchBtn] = useState(false);
   const share = (blog)=>{
@@ -44,45 +49,126 @@ function Homepage({ session }) {
     });
   };
 
+
+//profile 
+const [openProfile, setopenProfile] = React.useState(false);
+const supabase = useSupabaseClient();
+const user = useUser();
+const [loading, setLoading] = useState(true);
+// const [username, setUsername] = useState(null);
+// const [dob, setDob] = useState(null);
+// const [avatar_url, setAvatarUrl] = useState(null);
+const [adminDatas, setadminDatas] = useState({username:null,dob:null,avatar_url:null})
+
+// const {username,dob,avatar_url, blog_title,
+//   blog_description,
+//   blog_author,
+//   blog_category,
+//   blog_content}=adminDatas
+
+useEffect(() => {
+  getProfile();
+}, [session]);
+
+async function getProfile() {
+  try {
+    setLoading(true);
+
+    let { data, error, status } = await supabase
+      .from("profiles")
+      .select(`username, dob, avatar_url,
+      blog_title,
+       blog_description,
+      blog_author,
+       blog_category,
+       blog_content`)
+      .eq("id", user.id)
+      .single();
+console.log(getProfile);
+    if (error && status !== 406) {
+      throw error;
+    }
+
+    if (data) {
+      setadminDatas(data)
+      // setUsername(data.username);
+      // setDob(data.dob);
+      // setAvatarUrl(data.avatar_url);
+    }
+  } catch (error) {
+    alert("Error loading user data!");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function updateProfile({ username, dob, avatar_url }) {
+  try {
+    setLoading(true);
+
+    const updates = {
+      id: user.id,
+      username,
+      dob,
+      avatar_url,
+      updated_at: new Date().toISOString(),
+    };
+
+    let { error } = await supabase.from("profiles").upsert(updates);
+    if (error) throw error;
+    alert("Profile updated!");
+  } catch (error) {
+    alert("Error updating the data!");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+}
+
+
+
+
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
-      <Layout setswitchBtn={setswitchBtn} session={session}>
-        <Stack
-          direction="row"
-          width="100%"
-          sx={{
-            display: "flex",
-            width: "100%",
-            flexDirection: "row",
-          }}
-        >
-          {switchBtn && (
-            <Box
-              sx={{
-                width: { ex: 300, lg: 300, md: 300, sm: 200, xs: 200 },
-              }}
-            >
-              <List/>
-            </Box>
-          )}
+      <Layout setopenProfile={setopenProfile} adminDatas={adminDatas} supabase={supabase} switchBtn={switchBtn} setswitchBtn={setswitchBtn} session={session}>
+      {openProfile && (
+              <Profile
+                open={openProfile}
+                close={setopenProfile}
+                session={session}
+                user={user}
+                adminDatas={adminDatas}
+                setadminDatas={setadminDatas}
+                updateProfile={updateProfile}
+                loading={loading}
+                supabase={supabase}
+                // avatar_url={avatar_url}
+                // username={username}
+                // setUsername={setUsername}
+                // setDob={setDob}
+                // dob={dob}
+              />
+            )}
+         
 
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              margin: "10px 0px 0px",
-              gap: 5,
+              gap: 2,
             }}
             flex={4}
           >
-            <Box width="100%"></Box>
+           
             {blogDatas.length > 0 ? (
               blogDatas.map((blogData) => {
                 return (
                   <>
                     <BlogCard
+                    session={session}
                     share={share}
                       blogData={blogData}
                       deleteBlogDatas={deleteBlogDatas}
@@ -94,7 +180,7 @@ function Homepage({ session }) {
               <NoItems />
             )}
           </Box>
-        </Stack>
+       
       </Layout>
     </>
   );
