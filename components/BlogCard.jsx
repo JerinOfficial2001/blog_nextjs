@@ -2,15 +2,16 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import supabaseURLKEY from "@/supabaseURLKEY";
 import CardLayout from "@/Layouts/CardLayout";
-import { useUser } from "@supabase/auth-helpers-react";
 
 
-function BlogCard({ blogData,share, deleteBlogDatas }) {
- 
+
+function BlogCard({adminDatas, blogData, deleteBlogDatas }) {
+  const {username}=adminDatas
+  
   const {
     blog_title,
     blog_description,
-    blog_author,
+   
     blog_category,
     blog_content,
     id,
@@ -18,7 +19,7 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
 
 
   const [expanded, setExpanded] = React.useState(false);
-
+  const [openDialogBox, setopenDialogBox] = useState(false);
 
   //deleteblog
   const deleteHandler = async (id) => {
@@ -28,6 +29,8 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
       .eq("id",id);
     if (error) {
       console.log(error);
+    }else{
+      setopenDialogBox(false)
     }
     deleteBlogDatas(id);
   };
@@ -36,12 +39,12 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
   
   return (
    
-    <CardLayout  deleteCard={deleteHandler} deleteCardID={id} setExpanded={setExpanded} expanded={expanded} expandcontent={blog_content} >
+    <CardLayout setopenDialogBox={setopenDialogBox} openDialogBox={openDialogBox} deleteCard={deleteHandler} deleteCardID={id} setExpanded={setExpanded} expanded={expanded} expandcontent={blog_content} >
           <Typography variant="h5" component="div">
             {blog_title || ''}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {blog_author}
+          {username || ""}
           </Typography>
           <Typography variant="body2">{blog_category || ''}</Typography>
           <Typography variant="body2">{blog_description || ''}</Typography>

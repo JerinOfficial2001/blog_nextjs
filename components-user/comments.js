@@ -49,14 +49,18 @@ const handleSubmit =async()=>{
           justifyContent:'center',
           flexDirection:'column',
         gap:3,
-        width:'100%'
+        width:'90%',
+        backgroundColor:'lavender',
+        borderRadius:10,
+       marginBottom:2
           }}>
             <FormControl 
             sx={{
                 width:'100%',
                 display:'flex',
              alignItems:'center',
-            justifyContent:'center'
+            justifyContent:'center',
+            marginTop:2
             }}>
             <TextField value={comment} onChange={(e)=>{setcommentData({...commentData,comment:e.target.value})}} label='comment' variant="outlined" sx={{width:'90%'}}/>
             
@@ -74,7 +78,16 @@ const handleSubmit =async()=>{
             <TextField value={email} onChange={(e)=>{setcommentData({...commentData,email:e.target.value})}} type="email" label='Email' variant="outlined" sx={{width:'44%',marginBottom:2}}/>
             </FormControl>
        {validator && <Typography color="red"> All fields are mandatory</Typography>}
-            <Button onClick={()=>{handleSubmit()}} size="small">Post Comment</Button>
+            <Button sx={{
+               borderColor: "black",
+               "&:hover": { color: "black", backgroundColor: "lavender" },
+              marginBottom:2
+            }} 
+            variant='outlined'
+            onClick={()=>{handleSubmit()}} 
+            size="small">
+              Post Comment
+              </Button>
       </Box>
   )
 }

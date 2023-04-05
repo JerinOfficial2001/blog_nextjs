@@ -8,12 +8,14 @@ import { useRouter } from "next/router";
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import  Button  from "@mui/material/Button";
 import { useSession } from "@supabase/auth-helpers-react";
-
+import LogoutRounded from "@mui/icons-material/LogoutRounded";
+import CommentIcon from '@mui/icons-material/Comment';
 
 function List( {adminDatas,supabase,setopenProfile}) {
  const session =useSession()
  
   const {username,dob}=adminDatas
+  
   const router = useRouter();
  
   const navigateHandler = () => {
@@ -93,6 +95,17 @@ const navigate =()=>{
         <Typography color="black" >
         {dob || ""}
         </Typography>
+        <Button
+            variant="outlined"
+            sx={{
+              borderColor: "black",
+              "&:hover": { color: "black", backgroundColor: "lavender" },
+              width: 200,
+            }}
+           startIcon={<CommentIcon/>}
+          >
+           Comments
+          </Button>
           <Button
             variant="outlined"
             sx={{
@@ -103,6 +116,7 @@ const navigate =()=>{
             onClick={() => {supabase.auth.signOut();
               navigate()}
             }
+            startIcon={<LogoutRounded/>}
           >
             Sign Out
           </Button>

@@ -1,39 +1,31 @@
 import React, { useEffect, useState } from "react";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import NavBar from "@/components/NavBar";
-import Layout from "@/Layouts/Layout";
-import List from "@/components/List";
-import BlogCard from "@/components/BlogCard";
 import supabaseURLKEY from "@/supabaseURLKEY";
 import NoItems from "@/components/NoItems";
-import MenuLayout from "@/Layouts/MenuLayout";
 import Loader from "@/Layouts/loader";
 import UserCardLayout from "@/components-user/UserCardLayout";
-import  Modal  from "@mui/material/Modal";
-import  IconButton  from "@mui/material/IconButton";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import  TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import  Button  from "@mui/material/Button";
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import ReactTimeAgo from "react-time-ago";
-import Comments from "@/components-user/comments";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+
 
 TimeAgo.addDefaultLocale(en)
 
 
 function UserPage() {
+  const router =useRouter()
+const dispatch =useDispatch()
+
+const navigator =()=>{
+    router.push('/usercardpage')
+    
+  }
     const [isLoading, setisLoading] = useState(false);
   //get blogdatas
   const [blogDatas, setBlogDatas] = useState([]);
-  const [expanded, setExpanded] = React.useState(false);
-  
-
-
 
   const getBlogDatas = async () => {
     setisLoading(true);
@@ -71,15 +63,12 @@ function UserPage() {
             blog_description,
             blog_author,
             blog_category,
-            blog_content,
-            id,
             created_at
           } = blogData;
         return (
           <>
             <UserCardLayout
-              
-              setExpanded={setExpanded} 
+               navigator={navigator}
              > <Typography color='grey' fontSize='small'>
               <ReactTimeAgo date={created_at}/>
               </Typography>
@@ -92,52 +81,7 @@ function UserPage() {
           <Typography variant="body2">{blog_category || ''}</Typography>
           <Typography variant="body2">{blog_description || ''}</Typography>
              </UserCardLayout>
-             <Modal open={expanded} sx={{display: "flex",
-
-      justifyContent: "center",}}>
-            <Box sx={{
-      display: "flex",
-      flexDirection: "column",
-      gap: 2,
-      backgroundColor:'white',
-      width:'100%',
-      
-      
-      alignItems:'center',
-      overflow:'scroll',
-      overflowX:'hidden',
-   
-    }}>
-       <Box width='100%' sx={{float:'right'}}>
-        <IconButton onClick={()=>{setExpanded(false)}} sx={{float:'right',margin:'20px 30px 0px 0px',position:'absolute',right:60}} >
-            <CloseRoundedIcon color="black"/>
-        </IconButton>
-       </Box>
-      
-       <Typography color="black" fontWeight='bold' variant="h4" component="div">
-            {blog_title || ''}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Author:{blog_author}
-          </Typography>
-          <Typography color="text.secondary" variant="body2">{blog_category || ''}</Typography>
-          <Typography color="text.secondary" variant="body2">{blog_description || ''}</Typography>
-<div style={{color:'black'}} dangerouslySetInnerHTML={{__html : blog_content}} ></div>
- 
-<Box 
-        sx={{
-          display:'flex',
-         alignItems:'center',
-          justifyContent:'center',
-          flexDirection:'column',
-        gap:3,
-        width:'100%'
-          }}>
-            <Comments/>
-      </Box>
- </Box>
-
-             </Modal>
+            
             
           </>
         );

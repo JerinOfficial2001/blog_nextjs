@@ -4,12 +4,16 @@ import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 
 
-function UserCardLayout({children, setExpanded}) {
+function UserCardLayout({children,navigator}) {
 
-  return (
+
+
+return (
    
     <Card
       sx={{
@@ -40,7 +44,7 @@ function UserCardLayout({children, setExpanded}) {
         }}
       >
       
-        <Button sx={{float: "right",}} onClick={()=>{setExpanded(true)}} size="small">
+        <Button sx={{float: "right",}} onClick={()=>{navigator()}} size="small">
           Learn More
         </Button>
       </Box>

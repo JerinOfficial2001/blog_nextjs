@@ -19,7 +19,7 @@ import EditBlog from "./editBlog";
 
 function Homepage({ session }) {
   
-  const [hidePages, sethidePages] = useState(false)
+
   const [isLoading, setisLoading] = useState(false);
   const [switchBtn, setswitchBtn] = useState(false);
   const share = (blog)=>{
@@ -108,7 +108,7 @@ async function updateProfile({ username, dob}) {
   const [blogDatas, setBlogDatas] = useState([]);
   const getBlogDatas = async () => {
     setisLoading(true);
-    const { data, error } = await supabaseURLKEY.from("blogdatas").select();
+    const { data, error } = await supabaseURLKEY.from("blogdatas").select().order('id',{ascending:false});
     if (data) {
       let blogs = data?.filter(i=>i.user_id === user?.id)
       setBlogDatas(blogs);
@@ -173,12 +173,13 @@ async function updateProfile({ username, dob}) {
                 return (
                   <>
                     <BlogCard
+                    adminDatas={adminDatas}
                     session={session}
                     share={share}
                       blogData={blogData}
                       deleteBlogDatas={deleteBlogDatas}
                     />
-                     {hidePages && <EditBlog blogData={blogData}/>}
+                    
                   </>
                 );
               })

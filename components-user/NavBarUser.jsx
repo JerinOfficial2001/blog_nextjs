@@ -17,7 +17,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItem from "@mui/material/ListItem";
 import PersonIcon from "@mui/icons-material/Person";
-import LoginRoundedIcon from "@mui/icons-material/LogoutRounded";
+import LoginIcon from '@mui/icons-material/Login';
 import { useRouter } from "next/router";
 
 function NavBarUser() {
@@ -65,27 +65,11 @@ const navigator =()=>{
               {switchMenuBtn && (
               <MenuLayout close={setswitchMenuBtn}>
                 <ListItem disablePadding>
-                  <ListItemButton >
-                    <ListItemIcon>
-                      <PersonIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Profile" sx={{ color: "black" }} />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Setting" sx={{ color: "black" }} />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
                   <ListItemButton onClick={() => {
                       navigator()
                     }}>
                     <ListItemIcon>
-                      <LoginRoundedIcon />
+                      <LoginIcon />
                     </ListItemIcon>
                     <ListItemText primary="Login" sx={{ color: "black" }} />
                   </ListItemButton>

@@ -23,7 +23,6 @@ export default function CreateBlog() {
   const [validator, setvalidator] = useState(false);
   const [inputData, setinputData] = useState({
     blog_title: "",
-    blog_author: "",
     blog_category: "",
     blog_description: "",
     blog_content: "",
@@ -31,7 +30,7 @@ export default function CreateBlog() {
   const {
     blog_title,
     blog_description,
-    blog_author,
+   
     blog_category,
     blog_content,
   } = inputData;
@@ -42,7 +41,7 @@ const user_id=user?.id;
     setisLoading(true);
     if (
       blog_title !== "" &&
-      blog_author !== "" &&
+   
       blog_category !== "" &&
       blog_description !== "" &&
       blog_content !== ""
@@ -50,7 +49,7 @@ const user_id=user?.id;
       const { data, error } = await supabaseURLKEY.from("blogdatas").insert({
         blog_title,
         blog_description,
-        blog_author,
+   
         blog_category,
         blog_content,
         user_id
@@ -143,19 +142,7 @@ const user_id=user?.id;
                   setinputData({ ...inputData, blog_title: e.target.value });
                 }}
               />
-              <TextField
-                label={
-                  <>
-                    Author<span style={{ color: "red" }}>*</span>
-                  </>
-                }
-                variant="outlined"
-                type="blog_text"
-                value={blog_author}
-                onChange={(e) => {
-                  setinputData({ ...inputData, blog_author: e.target.value });
-                }}
-              />
+              
               <TextField
                 label={
                   <>
