@@ -7,17 +7,17 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import supabaseURLKEY from "@/supabaseURLKEY";
 import { useRouter } from "next/router";
 import NavBar from "@/components/NavBar";
 import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
 import Layout from "@/Layouts/Layout";
-import { useUser } from "@supabase/auth-helpers-react";
+import { useSession } from "@supabase/auth-helpers-react";
 
-export default function CreateBlog() {
-  const user=useUser();
+export default function EditBlog({blogData}) {
+  const session =useSession()
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [validator, setvalidator] = useState(false);
@@ -36,8 +36,18 @@ export default function CreateBlog() {
     blog_content,
   } = inputData;
 
-  //add blog
-const user_id=user?.id;
+ useEffect(() => {
+  setinputData({
+    blog_title:blogData.blog_title,
+    blog_description:blogData.blog_description,
+    blog_author:blogData.blog_author,
+    blog_category:blogData.blog_category,
+    blog_content:blogData.blog_content,
+  })
+ }, [blogData])
+ 
+  //edit blog
+
   const submitHandler = async () => {
     setisLoading(true);
     if (
@@ -47,26 +57,35 @@ const user_id=user?.id;
       blog_description !== "" &&
       blog_content !== ""
     ) {
-      const { data, error } = await supabaseURLKEY.from("blogdatas").insert({
+      const { data, error } = await supabaseURLKEY.from("blogdatas").update({
         blog_title,
         blog_description,
         blog_author,
         blog_category,
         blog_content,
-        user_id
-      });
+        
+      }).eq('id',session.user.id).then((res)=>{console.log(res);});
       if (data) {
-        setBlogDatas(data);
-      } else {
-        console.log(error);
-      }
+        setisLoading(true)
+  
      
       router.push("/admin");
-    } else {
-      setvalidator(true);
-    }
-    console.log(inputData);
-    setisLoading(false);
+      } else {
+        setvalidator(true)
+        console.log(error);
+      }
+      setisLoading(false)
+      setinputData({
+        blog_title: "",
+        blog_author: "",
+        blog_category: "",
+        blog_description: "",
+        blog_content: "",
+      });
+      
+    } 
+  
+   
     
   };
 
@@ -118,7 +137,7 @@ const user_id=user?.id;
                     //   log();
                   }}
                 >
-                  Publish
+                  Edit
                 </Button>
               </Box>
           

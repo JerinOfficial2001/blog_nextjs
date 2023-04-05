@@ -17,6 +17,7 @@ function MenuLayout({ children, close }) {
         elevation: 20,
         display: "flex",
         flexDirection: "column",
+        zIndex:'100%'
       }}
     >
       <nav

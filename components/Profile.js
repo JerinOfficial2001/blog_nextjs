@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import {  useSession } from "@supabase/auth-helpers-react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -12,8 +12,9 @@ import Homepage from "@/pages/homepage";
 import FormControl from "@mui/material/FormControl";
 import ModalLayout from "@/Layouts/ModalLayout";
 
-export default function Profile({ open, close, session, user,updateProfile,loading,adminDatas,setadminDatas}) {
+export default function Profile({ open, close, updateProfile,loading,adminDatas,setadminDatas}) {
   const {username,dob,avatar_url}=adminDatas
+const session=useSession()
   return (
     <ModalLayout open={open} close={close}>
       <Stack

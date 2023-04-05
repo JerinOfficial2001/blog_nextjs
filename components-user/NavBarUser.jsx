@@ -32,7 +32,7 @@ const navigator =()=>{
 
 
   return (
-    <AppBar position="static" sx={{ position: "sticky" }}>
+    <AppBar sx={{ position: "fixed" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           

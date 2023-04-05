@@ -21,6 +21,7 @@ import  Button  from "@mui/material/Button";
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 import ReactTimeAgo from "react-time-ago";
+import Comments from "@/components-user/comments";
 
 TimeAgo.addDefaultLocale(en)
 
@@ -30,21 +31,9 @@ function UserPage() {
   //get blogdatas
   const [blogDatas, setBlogDatas] = useState([]);
   const [expanded, setExpanded] = React.useState(false);
-  const [validator, setvalidator] = useState(false)
-  const [commentData, setcommentData] = useState({
-    comment:'',
-    email:'',
-    name:''
-  })
-const {comment,name,email}=commentData
+  
 
-const handleSubmit =()=>{
-    if(comment !=='' && name !=="" && email !==""){
-        setcommentData({})
-    }else{
-        setvalidator(true)
-    }
-}
+
 
   const getBlogDatas = async () => {
     setisLoading(true);
@@ -70,6 +59,7 @@ const handleSubmit =()=>{
       flexDirection: "column",
       alignItems: "center",
       gap: 2,
+
     }}
     flex={4}
   >
@@ -108,11 +98,11 @@ const handleSubmit =()=>{
             <Box sx={{
       display: "flex",
       flexDirection: "column",
-      gap: 3,
+      gap: 2,
       backgroundColor:'white',
-      width:'90%',
-      borderRadius:20,
-      border:'4px solid red',
+      width:'100%',
+      
+      
       alignItems:'center',
       overflow:'scroll',
       overflowX:'hidden',
@@ -143,30 +133,7 @@ const handleSubmit =()=>{
         gap:3,
         width:'100%'
           }}>
-            <FormControl 
-            sx={{
-                width:'100%',
-                display:'flex',
-             alignItems:'center',
-            justifyContent:'center'
-            }}>
-            <TextField value={comment} onChange={(e)=>{setcommentData({...commentData,comment:e.target.value})}} label='comment' variant="outlined" sx={{width:'90%'}}/>
-            
-            </FormControl>
-
-            <FormControl  sx={{
-                width:'100%',
-                display:'flex',
-             alignItems:'center',
-            justifyContent:'center',
-        flexDirection:'row',
-        gap:2.5
-            }}>
-            <TextField value={name} onChange={(e)=>{setcommentData({...commentData,name:e.target.value})}} type="text" label='Name' variant="outlined" sx={{width:'44%',marginBottom:2}}/>
-            <TextField value={email} onChange={(e)=>{setcommentData({...commentData,email:e.target.value})}} type="email" label='Email' variant="outlined" sx={{width:'44%',marginBottom:2}}/>
-            </FormControl>
-       {validator && <Typography color="red"> All fields are mandatory</Typography>}
-            <Button onClick={()=>{handleSubmit()}} size="small">Post Comment</Button>
+            <Comments/>
       </Box>
  </Box>
 

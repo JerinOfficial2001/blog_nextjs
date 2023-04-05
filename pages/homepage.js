@@ -14,23 +14,104 @@ import Loader from "@/Layouts/loader";
 //profile
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Profile from "@/components/Profile";
+import EditBlog from "./editBlog";
 
 
 function Homepage({ session }) {
   
+  const [hidePages, sethidePages] = useState(false)
   const [isLoading, setisLoading] = useState(false);
   const [switchBtn, setswitchBtn] = useState(false);
   const share = (blog)=>{
     navigator.share(blog);
   }
+
+
+//profile 
+const [openProfile, setopenProfile] = React.useState(false);
+const supabase = useSupabaseClient();
+const user = useUser();
+const [loading, setLoading] = useState(true);
+// const [username, setUsername] = useState(null);
+// const [dob, setDob] = useState(null);
+// const [avatar_url, setAvatarUrl] = useState(null);
+const [adminDatas, setadminDatas] = useState({username:null,dob:null})
+
+// const {username,dob,avatar_url, blog_title,
+//   blog_description,
+//   blog_author,
+//   blog_category,
+//   blog_content}=adminDatas
+
+useEffect(() => {
+  getProfile();
+}, [session]);
+
+async function getProfile() {
+  try {
+    setLoading(true);
+
+    let { data, error, status } = await supabase
+      .from("profiles")
+      .select(`username, dob, avatar_url`)
+      .eq("id", user.id)
+      .single();
+
+    if (error && status !== 406) {
+      throw error;
+    }
+
+    if (data) {
+      setadminDatas(data)
+      // setUsername(data.username);
+      // setDob(data.dob);
+      // setAvatarUrl(data.avatar_url);
+      console.log(data);
+    }
+  } catch (error) {
+    alert("Error loading user data!");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function updateProfile({ username, dob}) {
+  try {
+    setLoading(true);
+
+    const updates = {
+      id: user.id,
+      username,
+      dob,
+      updated_at: new Date().toISOString(),
+    };
+
+    let { error } = await supabase.from("profiles").upsert(updates);
+    if (error) throw error;
+    alert("Profile updated!");
+  } catch (error) {
+    alert("Error updating the data!");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+}
+
+
+
+
+
+
+
   //get blogdatas
   const [blogDatas, setBlogDatas] = useState([]);
-
   const getBlogDatas = async () => {
     setisLoading(true);
     const { data, error } = await supabaseURLKEY.from("blogdatas").select();
     if (data) {
-      setBlogDatas(data);
+      let blogs = data?.filter(i=>i.user_id === user?.id)
+      setBlogDatas(blogs);
     } else {
       console.log(error);
     }
@@ -49,82 +130,6 @@ function Homepage({ session }) {
     });
   };
 
-
-//profile 
-const [openProfile, setopenProfile] = React.useState(false);
-const supabase = useSupabaseClient();
-const user = useUser();
-const [loading, setLoading] = useState(true);
-// const [username, setUsername] = useState(null);
-// const [dob, setDob] = useState(null);
-// const [avatar_url, setAvatarUrl] = useState(null);
-const [adminDatas, setadminDatas] = useState({username:null,dob:null,avatar_url:null})
-
-// const {username,dob,avatar_url, blog_title,
-//   blog_description,
-//   blog_author,
-//   blog_category,
-//   blog_content}=adminDatas
-
-useEffect(() => {
-  getProfile();
-}, [session]);
-
-async function getProfile() {
-  try {
-    setLoading(true);
-
-    let { data, error, status } = await supabase
-      .from("profiles")
-      .select(`username, dob, avatar_url,
-      blog_title,
-       blog_description,
-      blog_author,
-       blog_category,
-       blog_content`)
-      .eq("id", user.id)
-      .single();
-console.log(getProfile);
-    if (error && status !== 406) {
-      throw error;
-    }
-
-    if (data) {
-      setadminDatas(data)
-      // setUsername(data.username);
-      // setDob(data.dob);
-      // setAvatarUrl(data.avatar_url);
-    }
-  } catch (error) {
-    alert("Error loading user data!");
-    console.log(error);
-  } finally {
-    setLoading(false);
-  }
-}
-
-async function updateProfile({ username, dob, avatar_url }) {
-  try {
-    setLoading(true);
-
-    const updates = {
-      id: user.id,
-      username,
-      dob,
-      avatar_url,
-      updated_at: new Date().toISOString(),
-    };
-
-    let { error } = await supabase.from("profiles").upsert(updates);
-    if (error) throw error;
-    alert("Profile updated!");
-  } catch (error) {
-    alert("Error updating the data!");
-    console.log(error);
-  } finally {
-    setLoading(false);
-  }
-}
 
 
 
@@ -173,6 +178,7 @@ async function updateProfile({ username, dob, avatar_url }) {
                       blogData={blogData}
                       deleteBlogDatas={deleteBlogDatas}
                     />
+                     {hidePages && <EditBlog blogData={blogData}/>}
                   </>
                 );
               })
@@ -180,7 +186,7 @@ async function updateProfile({ username, dob, avatar_url }) {
               <NoItems />
             )}
           </Box>
-       
+      
       </Layout>
     </>
   );

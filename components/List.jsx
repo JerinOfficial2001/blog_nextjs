@@ -7,31 +7,36 @@ import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
 import  Button  from "@mui/material/Button";
-import Home from "@/pages";
+import { useSession } from "@supabase/auth-helpers-react";
 
 
-function List( {session,adminDatas,supabase,setopenProfile}) {
-  const {username,dob,avatar_url}=adminDatas
+function List( {adminDatas,supabase,setopenProfile}) {
+ const session =useSession()
+ 
+  const {username,dob}=adminDatas
   const router = useRouter();
+ 
   const navigateHandler = () => {
-
-if(session){
     router.push("/createblog");
-  }else{
-    <Home/>
-  }
-  };
-
+  
+  } 
+const navigate =()=>{
+  router.push('/')
+}
 
   
 
   return (
     <Stack
 
-      sx={{position:{ el:"fixed",lg:"fixed",md:"fixed",sm:"fixed",xl:'none'},width:{ex:"20%",lg:'20%',md:'20%',sm:'30%',xs:'100%'}}}
+      sx={{
+        position:{ el:"fixed",lg:"fixed",md:"fixed",sm:"fixed",xl:'none'},
+      width:{ex:"20%",lg:'20%',md:'20%',sm:'30%',xs:'100%'},
+      backgroundColor:'white'
+    }}
       height="100%"
       alignItems='center'
-
+    
     >
       <Box
         sx={{
@@ -95,7 +100,9 @@ if(session){
               "&:hover": { color: "white", backgroundColor: "red" },
               width: 200,
             }}
-            onClick={() => supabase.auth.signOut()}
+            onClick={() => {supabase.auth.signOut();
+              navigate()}
+            }
           >
             Sign Out
           </Button>

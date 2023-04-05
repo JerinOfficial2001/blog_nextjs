@@ -18,11 +18,16 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import deleteimg from "../assets/deletemark.jpg";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 
 function CardLayout({children, deleteCard,deleteCardID,expanded, setExpanded,expandcontent}) {
+  const router=useRouter()
   const [openBlogMenu, setopenBlogMenu] = useState(false);
   const [openDialogBox, setopenDialogBox] = useState(false);
+const navigate =()=>{
+  router.push('/editBlog')
+}
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -75,7 +80,7 @@ function CardLayout({children, deleteCard,deleteCardID,expanded, setExpanded,exp
                 zIndex:999
               }}
             >
-              <IconButton>
+              <IconButton onClick={()=>{navigate()}}>
                 <EditIcon sx={{ fontSize: "medium" }} />
               </IconButton>
               <IconButton

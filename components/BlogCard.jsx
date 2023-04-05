@@ -2,10 +2,11 @@ import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import supabaseURLKEY from "@/supabaseURLKEY";
 import CardLayout from "@/Layouts/CardLayout";
+import { useUser } from "@supabase/auth-helpers-react";
 
 
 function BlogCard({ blogData,share, deleteBlogDatas }) {
-  
+ 
   const {
     blog_title,
     blog_description,
@@ -24,7 +25,7 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
     const { error } = await supabaseURLKEY
       .from("blogdatas")
       .delete()
-      .eq("id", id);
+      .eq("id",id);
     if (error) {
       console.log(error);
     }
@@ -35,7 +36,7 @@ function BlogCard({ blogData,share, deleteBlogDatas }) {
   
   return (
    
-    <CardLayout deleteCard={deleteHandler} deleteCardID={id} setExpanded={setExpanded} expanded={expanded} expandcontent={blog_content} >
+    <CardLayout  deleteCard={deleteHandler} deleteCardID={id} setExpanded={setExpanded} expanded={expanded} expandcontent={blog_content} >
           <Typography variant="h5" component="div">
             {blog_title || ''}
           </Typography>

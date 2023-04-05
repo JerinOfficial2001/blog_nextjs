@@ -19,6 +19,7 @@ const Home = () => {
     <Container
             
             sx={{
+              marginTop:10,
               backgroundColor: "lavender",
             }}
           >

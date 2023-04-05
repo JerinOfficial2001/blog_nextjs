@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Homepage from "./homepage";
 import Container from "@mui/material/Container";
-import Home from ".";
+
 
 
 
@@ -72,7 +72,7 @@ function Admin() {
           </>
         ) : (
           <>
-            <Home/>
+            <Homepage/>
           </>
         )}
       </>
