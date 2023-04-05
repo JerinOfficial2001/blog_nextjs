@@ -15,10 +15,13 @@ import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
 import Layout from "@/Layouts/Layout";
 import { useUser } from "@supabase/auth-helpers-react";
+import Avatar from "@/components/Avatar";
 
 export default function CreateBlog() {
   const user_id = useUser()?.id;
   const [isLoading, setisLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(null)
+  const [uploading, setUploading] = useState(false)
   const router = useRouter();
   const [validator, setvalidator] = useState(false);
   const [inputData, setinputData] = useState({
@@ -27,6 +30,7 @@ export default function CreateBlog() {
     blog_category: "",
     blog_description: "",
     blog_content: "",
+    image:null
     
   });
   const {
@@ -35,6 +39,7 @@ export default function CreateBlog() {
     blog_author,
     blog_category,
     blog_content,
+    image,
   } = inputData;
 
   //add blog
@@ -54,6 +59,7 @@ export default function CreateBlog() {
         blog_author,
         blog_category,
         blog_content,
+        image,
         user_id,
       });
       if (data) {
@@ -85,6 +91,35 @@ export default function CreateBlog() {
     }
     setisLoading(false);
   };
+
+
+
+  async function uploadAvatar(event) {
+    try {
+      setUploading(true)
+
+      if (!event.target.files || event.target.files.length === 0) {
+        throw new Error('You must select an image to upload.')
+      }
+
+      const file = event.target.files[0]
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Math.random()}.${fileExt}`
+      const filePath = `${fileName}`
+
+      let { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
+
+      if (uploadError) {
+        throw uploadError
+      }
+
+      onUpload(event, filePath)
+    } catch (error) {
+      alert(error.message)
+    } finally {
+      setUploading(false)
+    }
+  }
 
   return (
     <>
@@ -187,6 +222,16 @@ export default function CreateBlog() {
                   });
                 }}
               />
+               <Avatar
+              url={image}
+              size={150}
+              onUpload={(event, url) => {
+              setinputData({
+                ...inputData,
+                image : url
+              })
+      }}
+    />
             </FormControl>
            
              

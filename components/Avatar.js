@@ -1,41 +1,89 @@
-// import supabaseURLKEY from '@/supabaseURLKEY'
-import  Box  from '@mui/material/Box';
-import Image from 'next/image';
-import React from 'react'
-import profileimg from '../assets/profileimg.png'
+import supabaseURLKEY from "@/supabaseURLKEY";
+import { useEffect, useState } from "react";
 
-function Avatar({size}) {
-    let width = 'w-12';
-    if(size === 'lg'){
-        width = 'w-24 md:w-36'
+export default function Avatar({ url, size, onUpload }) {
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    if (url) downloadImage(url);
+  }, [url]);
+
+  async function downloadImage(path) {
+    try {
+      const { data, error } = await supabaseURLKEY.storage
+        .from("avatars")
+        .download(path);
+      if (error) {
+        throw error;
+      }
+      const url = URL.createObjectURL(data);
+      setAvatarUrl(url);
+    } catch (error) {
+      console.log("Error downloading image: ", error.message);
     }
-    // const [avatarUrl, setavatarUrl] = useState(null)
-    // const [uploading, setuploading] = useState(false)
+  }
 
-    // const uploadAvatar = async (e)=>{
-    //     try {
-    //         setuploading(true)
-    //         if(!e.target.files || e.target.files.length ==0){
-    //             throw new Error('You must select an image to upload')
-    //         }
-    //         const file =e.target.files[0]
-    //         const fileExt=file.name.split('.').pop()
-    //         const fileName =`${Math.random()}.${fileExt}`
-    //         const filePath =`${fileName}`
-    //         let{error}=await supabaseURLKEY.storage.from('avatars').upload(filePath)
-    //         if(uploadError){
-    //             throw uploadError
-    //         }
-    //         onUpload(filePath)
-    //     } catch (error) {
-            
-    //     }
-    // }
+  async function uploadAvatar(event) {
+    try {
+      setUploading(true);
+
+      if (!event.target.files || event.target.files.length === 0) {
+        throw new Error("You must select an image to upload.");
+      }
+
+      const file = event.target.files[0];
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      let { error: uploadError } = await supabaseURLKEY.storage
+        .from("avatars")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      onUpload(event, filePath);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setUploading(false);
+    }
+  }
+
   return (
-    <Box sx={`${width}`}>
-            <Image src={profileimg}/>
-    </Box>
-  )
+    <div>
+      {avatarUrl ? (
+        <img
+          src={avatarUrl}
+          alt="Avatar"
+          className="avatar image"
+          style={{ height: size, width: size }}
+        />
+      ) : (
+        <div
+          className="avatar no-image"
+          style={{ height: size, width: size }}
+        />
+      )}
+      <div style={{ width: size }}>
+        <label className="button primary block" htmlFor="single">
+          {uploading ? "Uploading ..." : "Upload"}
+        </label>
+        <input
+          style={{
+            visibility: "hidden",
+            position: "absolute",
+          }}
+          type="file"
+          id="single"
+          accept="image/*"
+          onChange={uploadAvatar}
+          disabled={uploading}
+        />
+      </div>
+    </div>
+  );
 }
-
-export default Avatar

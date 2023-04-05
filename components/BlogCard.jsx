@@ -99,9 +99,10 @@ const ExpandMore = styled((props) => {
         blog_author,
         blog_category,
         blog_content,
+        image,
         id,
       } = blogData;
-
+   
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -121,7 +122,7 @@ const ExpandMore = styled((props) => {
       <CardMedia
         component="img"
         height="194"
-        image="/static/images/cards/paella.jpg"
+        src={image}
         alt="Paella dish"
       />
       <CardContent>
