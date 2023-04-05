@@ -8,16 +8,13 @@ import Homepage from "./homepage";
 import Container from "@mui/material/Container";
 import Home from ".";
 
-
-
 function Admin() {
-    const session = useSession();
-    const supabase = useSupabaseClient();
-    return (
-      <>
-        {!session ? (
-          <>
-        
+  const session = useSession();
+  const supabase = useSupabaseClient();
+  return (
+    <>
+      {!session ? (
+        <>
           <Container
             maxWidth="el"
             sx={{
@@ -25,7 +22,7 @@ function Admin() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-             height:'100vh',
+              height: "100vh",
               width: "100%",
             }}
           >
@@ -49,7 +46,7 @@ function Admin() {
                   backgroundColor: "white",
                   display: "flex",
                   justifyContent: "center",
-  
+
                   gap: "10px",
                   flexDirection: "column",
                   width: "95%",
@@ -61,7 +58,6 @@ function Admin() {
                   </Typography>
                 </Stack>
                 <Auth
-                  providers={""}
                   supabaseClient={supabase}
                   appearance={{ theme: ThemeSupa }}
                   theme="dark"
@@ -69,14 +65,14 @@ function Admin() {
               </Box>
             </Box>
           </Container>
-          </>
-        ) : (
-          <>
-            <Home/>
-          </>
-        )}
-      </>
-    );
+        </>
+      ) : (
+        <>
+          <Home />
+        </>
+      )}
+    </>
+  );
 }
 
-export default Admin
+export default Admin;

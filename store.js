@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
+import thunk from "redux-thunk";
+import blogReducer from "./slices/reducers/blog";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    blogReducer: blogReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(thunk),
 });

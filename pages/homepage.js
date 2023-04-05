@@ -14,32 +14,35 @@ import Loader from "@/Layouts/loader";
 //profile
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Profile from "@/components/Profile";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogs } from "@/slices/actions/blogAction";
 
 function Homepage({ session }) {
-  
   const [isLoading, setisLoading] = useState(false);
   const [switchBtn, setswitchBtn] = useState(false);
-  const share = (blog)=>{
+  const dispatch = useDispatch();
+  const share = (blog) => {
     navigator.share(blog);
-  }
+  };
   //get blogdatas
-  const [blogDatas, setBlogDatas] = useState([]);
-
+  const blog = useSelector((state) => state.blogReducer.allBlogs);
+  const [blogDatas, setBlogDatas] = useState(blog);
   const getBlogDatas = async () => {
     setisLoading(true);
-    const { data, error } = await supabaseURLKEY.from("blogdatas").select();
-    if (data) {
-      setBlogDatas(data);
-    } else {
-      console.log(error);
-    }
+    // const { data, error } = await supabaseURLKEY.from("blogdatas").select();
+    // if (data) {
+    //   setBlogDatas(data);
+    // } else {
+    //   console.log(error);
+    // }
+    const result = await dispatch(getAllBlogs());
+    setBlogDatas(result?.payload?.data);
+    console.log(result);
     setisLoading(false);
-    
   };
   useEffect(() => {
     getBlogDatas();
-  }, []);
+  }, [blog?.length]);
 
   //delete blog
 
@@ -49,138 +52,139 @@ function Homepage({ session }) {
     });
   };
 
+  //profile
+  const [openProfile, setopenProfile] = React.useState(false);
+  const supabase = useSupabaseClient();
+  const user = useUser();
+  const [loading, setLoading] = useState(true);
+  // const [username, setUsername] = useState(null);
+  // const [dob, setDob] = useState(null);
+  // const [avatar_url, setAvatarUrl] = useState(null);
+  const [adminDatas, setadminDatas] = useState({
+    username: null,
+    dob: null,
+    avatar_url: null,
+  });
 
-//profile 
-const [openProfile, setopenProfile] = React.useState(false);
-const supabase = useSupabaseClient();
-const user = useUser();
-const [loading, setLoading] = useState(true);
-// const [username, setUsername] = useState(null);
-// const [dob, setDob] = useState(null);
-// const [avatar_url, setAvatarUrl] = useState(null);
-const [adminDatas, setadminDatas] = useState({username:null,dob:null,avatar_url:null})
+  // const {username,dob,avatar_url, blog_title,
+  //   blog_description,
+  //   blog_author,
+  //   blog_category,
+  //   blog_content}=adminDatas
 
-// const {username,dob,avatar_url, blog_title,
-//   blog_description,
-//   blog_author,
-//   blog_category,
-//   blog_content}=adminDatas
+  useEffect(() => {
+    getProfile();
+  }, []);
 
-useEffect(() => {
-  getProfile();
-}, [session]);
+  async function getProfile() {
+    try {
+      setLoading(true);
 
-async function getProfile() {
-  try {
-    setLoading(true);
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username, dob, avatar_url`)
+        .eq("id", user.id)
+        .single();
+      console.log(getProfile);
+      if (error && status !== 406) {
+        throw error;
+      }
 
-    let { data, error, status } = await supabase
-      .from("profiles")
-      .select(`username, dob, avatar_url,
-      blog_title,
-       blog_description,
-      blog_author,
-       blog_category,
-       blog_content`)
-      .eq("id", user.id)
-      .single();
-console.log(getProfile);
-    if (error && status !== 406) {
-      throw error;
+      if (data) {
+        setadminDatas(data);
+        // setUsername(data.username);
+        // setDob(data.dob);
+        // setAvatarUrl(data.avatar_url);
+      }
+    } catch (error) {
+      alert("Error loading user data!");
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    if (data) {
-      setadminDatas(data)
-      // setUsername(data.username);
-      // setDob(data.dob);
-      // setAvatarUrl(data.avatar_url);
+  async function updateProfile({ username, dob, avatar_url }) {
+    try {
+      setLoading(true);
+
+      const updates = {
+        id: user.id,
+        username,
+        dob,
+        avatar_url,
+        updated_at: new Date().toISOString(),
+      };
+
+      let { error } = await supabase.from("profiles").upsert(updates);
+      if (error) throw error;
+      alert("Profile updated!");
+    } catch (error) {
+      alert("Error updating the data!");
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    alert("Error loading user data!");
-    console.log(error);
-  } finally {
-    setLoading(false);
   }
-}
-
-async function updateProfile({ username, dob, avatar_url }) {
-  try {
-    setLoading(true);
-
-    const updates = {
-      id: user.id,
-      username,
-      dob,
-      avatar_url,
-      updated_at: new Date().toISOString(),
-    };
-
-    let { error } = await supabase.from("profiles").upsert(updates);
-    if (error) throw error;
-    alert("Profile updated!");
-  } catch (error) {
-    alert("Error updating the data!");
-    console.log(error);
-  } finally {
-    setLoading(false);
-  }
-}
-
-
-
 
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
-      <Layout setopenProfile={setopenProfile} adminDatas={adminDatas} supabase={supabase} switchBtn={switchBtn} setswitchBtn={setswitchBtn} session={session}>
-      {openProfile && (
-              <Profile
-                open={openProfile}
-                close={setopenProfile}
-                session={session}
-                user={user}
-                adminDatas={adminDatas}
-                setadminDatas={setadminDatas}
-                updateProfile={updateProfile}
-                loading={loading}
-                supabase={supabase}
-                // avatar_url={avatar_url}
-                // username={username}
-                // setUsername={setUsername}
-                // setDob={setDob}
-                // dob={dob}
-              />
-            )}
-         
+      <Layout
+        setopenProfile={setopenProfile}
+        adminDatas={adminDatas}
+        supabase={supabase}
+        switchBtn={switchBtn}
+        setswitchBtn={setswitchBtn}
+        session={session}
+      >
+        {openProfile && (
+          <Profile
+            open={openProfile}
+            close={setopenProfile}
+            session={session}
+            user={user}
+            adminDatas={adminDatas}
+            setadminDatas={setadminDatas}
+            updateProfile={updateProfile}
+            loading={loading}
+            supabase={supabase}
+            // avatar_url={avatar_url}
+            // username={username}
+            // setUsername={setUsername}
+            // setDob={setDob}
+            // dob={dob}
+          />
+        )}
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 2,
-            }}
-            flex={4}
-          >
-           
-            {blogDatas.length > 0 ? (
-              blogDatas.map((blogData) => {
-                return (
-                  <>
-                    <BlogCard
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 2,
+            padding: 2,
+            flexWrap: "wrap",
+          }}
+          flex={4}
+        >
+          {blogDatas.length > 0 ? (
+            blogDatas.map((blogData) => {
+              return (
+                <>
+                  <BlogCard
                     session={session}
                     share={share}
-                      blogData={blogData}
-                      deleteBlogDatas={deleteBlogDatas}
-                    />
-                  </>
-                );
-              })
-            ) : (
-              <NoItems />
-            )}
-          </Box>
-       
+                    blogData={blogData}
+                    deleteBlogDatas={deleteBlogDatas}
+                  />
+                </>
+              );
+            })
+          ) : (
+            <NoItems />
+          )}
+        </Box>
       </Layout>
     </>
   );

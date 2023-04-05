@@ -14,8 +14,10 @@ import NavBar from "@/components/NavBar";
 import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
 import Layout from "@/Layouts/Layout";
+import { useUser } from "@supabase/auth-helpers-react";
 
 export default function CreateBlog() {
+  const user_id = useUser()?.id;
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [validator, setvalidator] = useState(false);
@@ -25,6 +27,7 @@ export default function CreateBlog() {
     blog_category: "",
     blog_description: "",
     blog_content: "",
+    
   });
   const {
     blog_title,
@@ -51,6 +54,7 @@ export default function CreateBlog() {
         blog_author,
         blog_category,
         blog_content,
+        user_id,
       });
       if (data) {
         setBlogDatas(data);
@@ -58,7 +62,7 @@ export default function CreateBlog() {
         console.log(error);
       }
       setinputData({});
-      router.push("/admin");
+      router.push("/");
     } else {
       setvalidator(true);
     }
