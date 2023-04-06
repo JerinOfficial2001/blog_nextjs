@@ -16,9 +16,16 @@ import Loader from "@/Layouts/loader";
 import Layout from "@/Layouts/Layout";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useSelector } from "react-redux";
+import IconButton  from "@mui/material/IconButton";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 export default function CreateBlog() {
   const user=useUser();
+
+const closePage=()=>{
+  router.push('/')
+}
+
   const username = useSelector(state=>state.counter.username)
   console.log(username);
   const [isLoading, setisLoading] = useState(false);
@@ -95,7 +102,12 @@ console.log(user);
     <>
       {isLoading && <Loader open={isLoading} />}
       
-      <Layout>
+      <Box >
+        <Box sx={{width:'100%',height:'50px'}}>
+          <IconButton sx={{float:'right'}} onClick={()=>{closePage()}}>
+            <CloseRoundedIcon/>
+          </IconButton>
+        </Box>
         <Container sx={{display:'flex',gap:5}}>
       <Box flex={1.5}>
         <Stack
@@ -250,7 +262,7 @@ console.log(user);
         />
       </Box>
       </Container>
-      </Layout>
+      </Box>
     </>
   );
 }
