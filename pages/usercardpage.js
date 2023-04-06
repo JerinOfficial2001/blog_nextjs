@@ -68,7 +68,7 @@ function UserCardPage() {
           <Typography color="text.secondary" variant="body2">{blog_description || ''}</Typography>
           
           <Typography color='grey' fontSize='small'>
-              <ReactTimeAgo date={created_at}/>
+              {/* <ReactTimeAgo date={created_at} locale="en"/> */}
               </Typography>
           </Box>
 <div style={{color:'black',width:'90%'}} dangerouslySetInnerHTML={{__html : blog_content}} ></div>

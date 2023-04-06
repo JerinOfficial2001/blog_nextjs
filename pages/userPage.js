@@ -11,9 +11,8 @@ import ReactTimeAgo from "react-time-ago";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { getBlog } from "@/slices/counterSlice";
+ 
 
-
-TimeAgo.addDefaultLocale(en)
 
 
 function UserPage() {
@@ -65,7 +64,7 @@ const navigator =async(data)=>{
   >
     <Box width="100%"></Box>
     {blogDatas.length > 0 ? (
-      blogDatas.map((blogData) => {
+      blogDatas.map((blogData,index) => {
         const {
             blog_title,
             blog_description,
@@ -78,8 +77,10 @@ const navigator =async(data)=>{
             
                navigator={()=>{
                navigator(blogData);}}
-             > <Typography color='grey' fontSize='small'>
-              <ReactTimeAgo date={created_at}/>
+             > <Typography key={index} color='grey' fontSize='small'>
+              {/* <ReactTimeAgo date={created_at} locale="en"/> */}
+             
+              
               </Typography>
                     <Typography variant="h5" component="div">
             {blog_title || ''}
