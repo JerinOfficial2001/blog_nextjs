@@ -1,4 +1,3 @@
-import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Box from "@mui/material/Box";
@@ -6,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Homepage from "./homepage";
 import Container from "@mui/material/Container";
+import Auth from "@/components-user/Auth";
 
 
 
@@ -60,12 +60,7 @@ function Admin() {
                     Welcome To Blog
                   </Typography>
                 </Stack>
-                <Auth
-                  providers={""}
-                  supabaseClient={supabase}
-                  appearance={{ theme: ThemeSupa }}
-                  theme="dark"
-                />
+                <Auth/>
               </Box>
             </Box>
           </Container>
