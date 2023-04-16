@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   blog:{},
-  profile:{}
+  profile:{},
+  comment:{},
 };
 
 export const counterSlice = createSlice({
@@ -17,10 +18,13 @@ export const counterSlice = createSlice({
   getusername:(state,{payload})=>{
     state.profile=payload
   },
+  getusercomment:(state,{payload})=>{
+    state.comment=payload
+  }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { getBlog ,getusername} = counterSlice.actions;
+export const { getBlog ,getusername,getusercomment} = counterSlice.actions;
 
 export default counterSlice.reducer;

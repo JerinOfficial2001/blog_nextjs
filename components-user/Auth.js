@@ -128,7 +128,7 @@ export default function Auth() {
                 setalert(false);
               }}
             >
-              log in
+              sign up
             </Link>
           </Stack>
           {validator && (

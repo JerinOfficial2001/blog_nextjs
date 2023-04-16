@@ -14,16 +14,16 @@ import ModalLayout from "@/Layouts/ModalLayout";
 import Edit from "@mui/icons-material/Edit";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import supabaseURLKEY from "@/supabaseURLKEY";
-import Link from "@mui/material/Link";
+import { useSelector } from "react-redux";
+import Avatar from '@mui/material/Avatar'
+
 
 
 function List({updateProfile,setadminDatas, adminDatas, supabase, setopenProfile }) {
   const [hide, sethide] = useState(false);
   const session = useSession();
-
+const comment =useSelector(state=>state.counter.comment);
   const { username, dob } = adminDatas;
-
   const router = useRouter();
 
   const navigateHandler = () => {
@@ -106,6 +106,7 @@ function List({updateProfile,setadminDatas, adminDatas, supabase, setopenProfile
         <Typography color="black">{session?.user?.email}</Typography>
 
         <Typography color="black">{dob || ""}</Typography>
+       
         <Button
           variant="outlined"
           sx={{
@@ -114,9 +115,11 @@ function List({updateProfile,setadminDatas, adminDatas, supabase, setopenProfile
             width: 200,
           }}
           startIcon={<CommentIcon />}
+          endIcon={<Avatar sx={{color:'red',height:20,width:20,background:'white',boxShadow:"0px 0px 5px "}}>{comment.length}</Avatar>}
         >
           Comments
         </Button>
+       
         <Button
           onClick={() => {
             sethide(true);
@@ -204,8 +207,9 @@ function List({updateProfile,setadminDatas, adminDatas, supabase, setopenProfile
             width: 200,
           }}
           onClick={() => {
-            supabase.auth.signOut();
             navigate();
+            supabase.auth.signOut();
+            
           }}
           startIcon={<LogoutRounded />}
         >

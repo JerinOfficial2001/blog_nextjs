@@ -15,8 +15,8 @@ import Loader from "@/Layouts/loader";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Profile from "@/components/Profile";
 import EditBlog from "./editBlog";
-import { useDispatch } from "react-redux";
-import { getprofile, getusername } from "@/slices/counterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getprofile, getusercomment, getusername } from "@/slices/counterSlice";
 
 function Homepage({ session }) {
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ const {username,dob}=adminDatas
   //   blog_category,
   //   blog_content}=adminDatas
 
+
   useEffect(() => {
     getProfile();
   }, [session]);
@@ -52,7 +53,7 @@ const {username,dob}=adminDatas
 
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, dob`)
+        .select(`username, dob,id`)
         .eq("id", user.id)
         .single();
 
@@ -100,6 +101,8 @@ const {username,dob}=adminDatas
 
   //get blogdatas
   const [blogDatas, setBlogDatas] = useState([]);
+
+
   const getBlogDatas = async () => {
     setisLoading(true);
     const { data, error } = await supabaseURLKEY
@@ -109,6 +112,7 @@ const {username,dob}=adminDatas
     if (data) {
       let blogs = data?.filter((i) => i.user_id === user?.id);
       setBlogDatas(blogs);
+      console.log(blogs);
     } else {
       console.log(error);
     }
@@ -116,6 +120,7 @@ const {username,dob}=adminDatas
   };
   useEffect(() => {
     getBlogDatas();
+    
   }, []);
 
   //delete blog
@@ -126,6 +131,27 @@ const {username,dob}=adminDatas
     });
   };
 
+//fetch comments
+const blog =useSelector(state=>state.counter.blog);
+const {id}=blog
+const [userComments, setuserComments] = useState([])
+async function getComments (){
+const {error,data}=await supabaseURLKEY.from('comments').select()
+if(data){
+  const comment =data?.filter((i)=>i.blog_id===id)
+  dispatch(getusercomment(comment))
+  setuserComments(comment)
+  console.log("GETCOMMENTS",data);
+}else
+{
+  console.log("comment",error);
+}
+
+}
+  useEffect(() => {
+    getBlogDatas();
+    getComments();
+  }, [user]);
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
