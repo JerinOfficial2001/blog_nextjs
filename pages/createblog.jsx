@@ -26,8 +26,9 @@ const closePage=()=>{
   router.push('/')
 }
 
-  const username = useSelector(state=>state.counter.username)
-  console.log(username);
+  const profile = useSelector(state=>state.counter.profile)
+  const {username}=profile
+
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [validator, setvalidator] = useState(false);

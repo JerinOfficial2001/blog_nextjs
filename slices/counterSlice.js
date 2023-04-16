@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   blog:{},
-  username:""
+  profile:{}
 };
 
 export const counterSlice = createSlice({
@@ -11,12 +11,12 @@ export const counterSlice = createSlice({
   reducers: {
 
     getBlog:(state,{payload})=>{
-      console.log(payload);
+     
       state.blog=payload
     },
   getusername:(state,{payload})=>{
-    state.username=payload
-  }
+    state.profile=payload
+  },
   }
 });
 

@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import React, { useState } from "react";
 import NavBar from "../components/NavBar";
 
-function Layout({setopenProfile,supabase,adminDatas,switchBtn, setswitchBtn, children, session }) {
+function Layout({updateProfile,setadminDatas,setopenProfile,supabase,adminDatas,switchBtn, setswitchBtn, children, session }) {
 
   return (
     <>
@@ -43,6 +43,8 @@ function Layout({setopenProfile,supabase,adminDatas,switchBtn, setswitchBtn, chi
             >
                
               <List 
+              updateProfile={updateProfile}
+              setadminDatas={setadminDatas}
               setopenProfile={setopenProfile}
                 session={session} 
                 adminDatas={adminDatas} 

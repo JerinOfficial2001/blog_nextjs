@@ -21,7 +21,7 @@ function UserPage() {
 const dispatch =useDispatch()
 
 const blog =useSelector(state=>state.counter.blog);
-    const {user_name}=blog;
+ const {user_name}=blog
 
 
 const navigator =async(data)=>{
@@ -74,7 +74,7 @@ const navigator =async(data)=>{
         return (
           <>
             <UserCardLayout
-            
+            key={index}
                navigator={()=>{
                navigator(blogData);}}
              > <Typography key={index} color='grey' fontSize='small'>

@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 function UserCardPage() {
   const router=useRouter()
     const blog =useSelector(state=>state.counter.blog);
+    
     const {blog_title,
       blog_description,
       blog_category,
