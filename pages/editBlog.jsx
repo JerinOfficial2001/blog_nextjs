@@ -15,37 +15,23 @@ import SendIcon from "@mui/icons-material/Send";
 import Loader from "@/Layouts/loader";
 import Layout from "@/Layouts/Layout";
 import { useSession } from "@supabase/auth-helpers-react";
+import { useSelector } from "react-redux";
 
 export default function EditBlog({blogData}) {
+  const blog =useSelector(state=>state.counter.blog);
+  console.log("BLOG", blog);
   const session =useSession()
   const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
   const [validator, setvalidator] = useState(false);
-  const [inputData, setinputData] = useState({
-    blog_title: "",
-    blog_author: "",
-    blog_category: "",
-    blog_description: "",
-    blog_content: "",
-  });
+ 
   const {
     blog_title,
     blog_description,
     blog_author,
     blog_category,
     blog_content,
-  } = inputData;
-
- useEffect(() => {
-  setinputData({
-    blog_title:blogData.blog_title,
-    blog_description:blogData.blog_description,
-    blog_author:blogData.blog_author,
-    blog_category:blogData.blog_category,
-    blog_content:blogData.blog_content,
-  })
- }, [blogData])
- 
+  } = blog
   //edit blog
 
   const submitHandler = async () => {
@@ -57,14 +43,14 @@ export default function EditBlog({blogData}) {
       blog_description !== "" &&
       blog_content !== ""
     ) {
-      const { data, error } = await supabaseURLKEY.from("blogdatas").update({
+      const updates = {
         blog_title,
         blog_description,
         blog_author,
         blog_category,
         blog_content,
-        
-      }).eq('id',session.user.id).then((res)=>{console.log(res);});
+      };
+      const { data, error } = await supabaseURLKEY.from("blogdatas").upsert(updates)
       if (data) {
         setisLoading(true)
   
