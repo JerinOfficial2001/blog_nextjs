@@ -17,6 +17,7 @@ import Layout from "@/Layouts/Layout";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useSelector } from "react-redux";
 
+
 export default function EditBlog({blogData}) {
   const blog =useSelector(state=>state.counter.blog);
   console.log("BLOG", blog);

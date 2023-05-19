@@ -19,12 +19,12 @@ import DialogContent from "@mui/material/DialogContent";
 import deleteimg from "../assets/deletemark.jpg";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
+import {WhatsappShareButton} from "react-share"
 
 function CardLayout({openDialogBox, setopenDialogBox,children, deleteCard,deleteCardID,expanded, setExpanded,expandcontent}) {
   const router=useRouter()
   const [openBlogMenu, setopenBlogMenu] = useState(false);
-  
+  const pageurl =window.location.href
 const navigate =()=>{
   router.push('/editBlog')
 }
@@ -91,7 +91,9 @@ const navigate =()=>{
                 <DeleteIcon sx={{ fontSize: "medium" }} />
               </IconButton>
               <IconButton  >
+                <WhatsappShareButton url={pageurl} >
                 <ShareIcon sx={{ fontSize: "medium" }} />
+                </WhatsappShareButton>
               </IconButton>
               <IconButton
                 onClick={() => {
