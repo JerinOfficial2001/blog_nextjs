@@ -34,6 +34,7 @@ export default function EditBlog({ blogData }) {
     blog_author,
     blog_category,
     blog_content,
+    id
   } = blog;
   //edit blog
 
@@ -52,10 +53,11 @@ export default function EditBlog({ blogData }) {
         blog_author,
         blog_category,
         blog_content,
+        
       };
       const { data, error } = await supabaseURLKEY
         .from("blogdatas")
-        .upsert(updates);
+        .upsert(updates).eq("id",id);
       if (data) {
         setisLoading(true);
 
@@ -186,22 +188,7 @@ export default function EditBlog({ blogData }) {
                       });
                     }}
                   />
-                  <TextField
-                    label={
-                      <>
-                        Author<span style={{ color: "red" }}>*</span>
-                      </>
-                    }
-                    variant="outlined"
-                    type="blog_text"
-                    value={blog_author}
-                    onChange={(e) => {
-                      setinputData({
-                        ...inputData,
-                        blog_author: e.target.value,
-                      });
-                    }}
-                  />
+                  
                   <TextField
                     label={
                       <>

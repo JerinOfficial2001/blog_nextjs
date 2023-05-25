@@ -19,15 +19,24 @@ import DialogContent from "@mui/material/DialogContent";
 import deleteimg from "../assets/deletemark.jpg";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import {WhatsappShareButton} from "react-share"
+import { WhatsappShareButton } from "react-share";
 
-function CardLayout({openDialogBox, setopenDialogBox,children, deleteCard,deleteCardID,expanded, setExpanded,expandcontent}) {
-  const router=useRouter()
+function CardLayout({
+  openDialogBox,
+  setopenDialogBox,
+  children,
+  deleteHandler,
+  id,
+  expanded,
+  setExpanded,
+  expandcontent,
+}) {
+  const router = useRouter();
   const [openBlogMenu, setopenBlogMenu] = useState(false);
-  const pageurl =window.location.href
-const navigate =()=>{
-  router.push('/editBlog')
-}
+  const pageurl = window.location.href;
+  const navigate = () => {
+    router.push("/editBlog");
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -41,7 +50,7 @@ const navigate =()=>{
         boxShadow: "0px 1px 5px 0px grey",
         elevation: 20,
         borderRadius: 4,
-        margin:'10px 0px 2px 0px'
+        margin: "10px 0px 2px 0px",
       }}
     >
       <CardContent
@@ -51,9 +60,7 @@ const navigate =()=>{
           justifyContent: "space-between",
         }}
       >
-        <Stack>
-         {children}
-        </Stack>
+        <Stack>{children}</Stack>
         <Stack>
           <IconButton
             onClick={() => {
@@ -77,10 +84,14 @@ const navigate =()=>{
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",
-                zIndex:999
+                zIndex: 999,
               }}
             >
-              <IconButton onClick={()=>{navigate()}}>
+              <IconButton
+                onClick={() => {
+                  navigate();
+                }}
+              >
                 <EditIcon sx={{ fontSize: "medium" }} />
               </IconButton>
               <IconButton
@@ -90,9 +101,9 @@ const navigate =()=>{
               >
                 <DeleteIcon sx={{ fontSize: "medium" }} />
               </IconButton>
-              <IconButton  >
-                <WhatsappShareButton url={pageurl} >
-                <ShareIcon sx={{ fontSize: "medium" }} />
+              <IconButton>
+                <WhatsappShareButton url={pageurl}>
+                  <ShareIcon sx={{ fontSize: "medium" }} />
                 </WhatsappShareButton>
               </IconButton>
               <IconButton
@@ -143,7 +154,7 @@ const navigate =()=>{
                   "&:hover": { backgroundColor: "grey" },
                 }}
                 onClick={() => {
-                  deleteCard(deleteCardID);
+                  deleteHandler(id);
                 }}
               >
                 yes,delete it!
@@ -169,8 +180,8 @@ const navigate =()=>{
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {/* <Typography paragraph>{blog_contentHTMLBodyElement}</Typography> */}
-        <div dangerouslySetInnerHTML={{__html : expandcontent}} ></div>
-         {/* <div dangerouslySetInnerHTML= __html: DOMPurify.sanitize()/> */}
+          <div dangerouslySetInnerHTML={{ __html: expandcontent }}></div>
+          {/* <div dangerouslySetInnerHTML= __html: DOMPurify.sanitize()/> */}
         </CardContent>
       </Collapse>
 

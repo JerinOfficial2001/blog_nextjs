@@ -39,7 +39,7 @@ function BlogCard({adminDatas, blogData, deleteBlogDatas }) {
   
   return (
    
-    <CardLayout setopenDialogBox={setopenDialogBox} openDialogBox={openDialogBox} deleteCard={deleteHandler} deleteCardID={id} setExpanded={setExpanded} expanded={expanded} expandcontent={blog_content} >
+    <CardLayout setopenDialogBox={setopenDialogBox} openDialogBox={openDialogBox} deleteHandler={deleteHandler} id={id} setExpanded={setExpanded} expanded={expanded} expandcontent={blog_content} >
           <Typography variant="h5" component="div">
             {blog_title || ''}
           </Typography>
