@@ -17,9 +17,11 @@ export const counterSlice = createSlice({
     },
   getusername:(state,{payload})=>{
     state.profile=payload
+    
   },
   getusercomment:(state,{payload})=>{
     state.comment=payload
+
   }
   }
 });

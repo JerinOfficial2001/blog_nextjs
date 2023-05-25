@@ -20,9 +20,6 @@ function UserPage() {
   const router =useRouter()
 const dispatch =useDispatch()
 
-const blog =useSelector(state=>state.counter.blog);
- const {user_name}=blog
-
 
 const navigator =async(data)=>{
   console.log("DATA",data);
@@ -69,7 +66,8 @@ const navigator =async(data)=>{
             blog_title,
             blog_description,
             blog_category,
-            created_at
+            created_at,
+            user_name
           } = blogData;
         return (
           <>

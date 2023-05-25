@@ -63,7 +63,7 @@ function UserCardPage() {
             {blog_title || ''}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            By {user_name}
+            By {user_name || ''}
           </Typography>
           
           <Typography color="text.secondary" variant="body2">{blog_description || ''}</Typography>
