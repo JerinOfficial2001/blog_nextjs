@@ -102,10 +102,24 @@ console.log(user);
   return (
     <>
       {isLoading && <Loader open={isLoading} />}
-      
+      <Stack
+        sx={{
+          height: "100vh",
+          width: "100%",
+          justifyContent: "center",
+          position: "relative",
+        }}
+      >
       <Box >
         <Box sx={{width:'100%',height:'50px'}}>
-          <IconButton sx={{float:'right'}} onClick={()=>{closePage()}}>
+          <IconButton  sx={{
+              position: "absolute",
+              top: 5,
+              right: 5,
+              background: "red",
+              color: "white",
+              "&:hover": { color: "black", background: "silver" },
+            }} onClick={()=>{closePage()}}>
             <CloseRoundedIcon/>
           </IconButton>
         </Box>
@@ -264,6 +278,7 @@ console.log(user);
       </Box>
       </Container>
       </Box>
+      </Stack>
     </>
   );
 }

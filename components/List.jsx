@@ -15,14 +15,18 @@ import Edit from "@mui/icons-material/Edit";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { useSelector } from "react-redux";
-import Avatar from '@mui/material/Avatar'
+import Avatar from "@mui/material/Avatar";
 
-
-
-function List({updateProfile,setadminDatas, adminDatas, supabase, setopenProfile }) {
+function List({
+  updateProfile,
+  setadminDatas,
+  adminDatas,
+  supabase,
+  setopenProfile,
+}) {
   const [hide, sethide] = useState(false);
   const session = useSession();
-const comment =useSelector(state=>state.counter.comment);
+  const comment = useSelector((state) => state.counter.comment);
   const { username, dob } = adminDatas;
   const router = useRouter();
 
@@ -99,14 +103,28 @@ const comment =useSelector(state=>state.counter.comment);
           justifyContent: "space-between",
           alignItems: "center",
           flexDirection: "column",
+          marginTop: 8,
         }}
       >
-        <Typography color="black">{username || ""}</Typography>
-
+        <Box
+          sx={{
+            background: "linear-gradient(to right,#6a8bec,#b9e1fd,#61b8e4)",
+            width: "100%",
+            borderRadius: 3,
+            display: "flex",
+            height:50,
+            justifyContent:'center',
+            alignItems:'center'
+          }}
+        >
+          <Typography color="black" sx={{ fontWeight: "bold" }}>
+            {username || ""}
+          </Typography>
+        </Box>
         <Typography color="black">{session?.user?.email}</Typography>
 
         <Typography color="black">{dob || ""}</Typography>
-       
+
         <Button
           variant="outlined"
           sx={{
@@ -115,90 +133,23 @@ const comment =useSelector(state=>state.counter.comment);
             width: 200,
           }}
           startIcon={<CommentIcon />}
-          endIcon={<Avatar sx={{color:'red',height:20,width:20,background:'white',boxShadow:"0px 0px 5px "}}>{comment.length}</Avatar>}
+          endIcon={
+            <Avatar
+              sx={{
+                color: "red",
+                height: 20,
+                width: 20,
+                background: "white",
+                boxShadow: "0px 0px 5px ",
+              }}
+            >
+              {comment.length}
+            </Avatar>
+          }
         >
           Comments
         </Button>
-       
-        <Button
-          onClick={() => {
-            sethide(true);
-          }}
-          variant="outlined"
-          sx={{
-            borderColor: "black",
-            "&:hover": { color: "black", backgroundColor: "lavender" },
-            width: 200,
-          }}
-          startIcon={<Edit />}
-        >
-          Edit
-        </Button>
-{/* edit */}
-        {hide && <ModalLayout open={hide} close={sethide}> <Stack
-          sx={{
-            gap: 3,
-            alignItems: "center",
-            height: 350,
-            justifyContent: "center",
-          }}
-        >
-          <FormControl sx={{ display: "flex", gap: 1, width: "100%" }}>
-            <TextField
-              size="small"
-              label="Name"
-              variant="outlined"
-              value={username}
-              onChange={(e) => {
-                setadminDatas({ ...adminDatas, username: e.target.value });
-              }}
-            />
 
-            <TextField
-            type="date"
-              size="small"
-              
-              variant="outlined"
-              value={dob}
-              onChange={(e) => {
-                setadminDatas({ ...adminDatas, dob: e.target.value });
-              }}
-            />
-          </FormControl>
-          <Button
-            variant="contained"
-            sx={{
-              color: "white",
-              "&:hover": { backgroundColor: "lightslategrey" },
-            }}
-            onClick={() => {
-              updateProfile()
-            }}
-          >
-            Update
-          </Button>
-          {/* <Stack direction="row" alignItems="center" gap="5px">
-            <Typography color="black">{"Don't have an account?"}</Typography>
-            <Link
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                setswiftPage(true);
-                setvalidator(false);
-                setalert(false);
-              }}
-            >
-              log in
-            </Link>
-          </Stack>
-          {validator && (
-            <Typography color="red">All fields are mandatory*</Typography>
-          )}
-          {alert && (
-            <Typography color="red">email or password incorrect!</Typography>
-          )}*/}
-        </Stack> 
-        </ModalLayout>}
-       
         <Button
           variant="outlined"
           sx={{
@@ -209,7 +160,6 @@ const comment =useSelector(state=>state.counter.comment);
           onClick={() => {
             navigate();
             supabase.auth.signOut();
-            
           }}
           startIcon={<LogoutRounded />}
         >
